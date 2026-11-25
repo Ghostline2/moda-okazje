@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GHOSTLINE – najniższe ceny w streetwearze</title>
+<meta name="description" content="GHOSTLINE porównuje ceny butów i ubrań streetwearowych w polskich sklepach i pokazuje, gdzie jest najtaniej.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 42'%3E%3Cpath d='M20 2C10.6 2 4.5 8.8 4.5 17.5V40l5.2-4.4L14.9 40l5.1-4.4 5.1 4.4 5.2-4.4 5.2 4.4V17.5C35.5 8.8 29.4 2 20 2Z' fill='%23d7ff1f'/%3E%3Crect x='11.5' y='14' width='5.2' height='8' rx='2.6' fill='%230b0b0c'/%3E%3Crect x='23.3' y='14' width='5.2' height='8' rx='2.6' fill='%230b0b0c'/%3E%3Cpath d='M0 27.5h40' stroke='%230b0b0c' stroke-width='2.4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0b0b0c;--panel:#151517;--line:#2a2a2e;--text:#f2f2f2;--muted:#9a9aa2;--acc:#d7ff1f;--hot:#ff3d00;
+        --head:"Archivo Black",Impact,"Arial Black",sans-serif;--body:"Space Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.4}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+  .wrap{max-width:1200px;margin:auto;padding:0 18px}
+
+  header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:2px solid var(--line)}
+  .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;max-width:1200px;margin:auto}
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--head);font-size:24px;letter-spacing:1px;text-decoration:none}
+  .logo svg{height:34px;width:auto;color:var(--acc);flex:none}
+  .logo span{color:var(--acc)}
+  .ticker{background:var(--acc);color:#000;overflow:hidden;white-space:nowrap;font-family:var(--head);font-size:13px;text-transform:uppercase}
+  .ticker div{display:inline-block;padding:6px 0;animation:tick 28s linear infinite}
+  .ticker span{margin:0 22px}
+  @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.ticker div{animation:none}html{scroll-behavior:auto}}
+
+  .hero{padding:44px 0 24px}
+  h1{font-family:var(--head);font-size:clamp(34px,7vw,76px);line-height:.98;margin:0 0 20px;text-transform:uppercase}
+  h1 em{font-style:normal;color:var(--acc)}
+  .search{display:flex;gap:0;max-width:640px}
+  .search input{flex:1;min-width:0;padding:16px 18px;font:inherit;font-size:17px;color:var(--text);background:var(--panel);border:2px solid var(--line);border-right:0;border-radius:0}
+  .search input::placeholder{color:var(--muted)}
+  .search button{padding:0 22px;font-family:var(--head);text-transform:uppercase;background:var(--acc);color:#000;border:2px solid var(--acc);border-radius:0;cursor:pointer}
+
+  h2{font-family:var(--head);text-transform:uppercase;font-size:22px;margin:34px 0 14px}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+  .tile{position:relative;min-height:120px;padding:14px;text-align:left;color:var(--text);background:var(--panel) center/cover no-repeat;border:2px solid var(--line);border-radius:0;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;font:inherit}
+  .tile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.85))}
+  .tile b,.tile small{position:relative}
+  .tile b{font-family:var(--head);text-transform:uppercase;font-size:19px}
+  .tile small{color:var(--muted)}
+  .tile:hover{border-color:var(--acc)}
+  .tile[aria-pressed="true"]{border-color:var(--acc);box-shadow:6px 6px 0 var(--acc)}
+  .tile[aria-pressed="true"] small{color:var(--acc)}
+
+  .tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:30px 0 14px}
+  .tools h2{margin:0}
+  .tools select{padding:10px 12px;font:inherit;color:var(--text);background:var(--panel);border:2px solid var(--line);border-radius:0}
+  #count{color:var(--muted);font-family:var(--body);font-size:15px;text-transform:none}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;padding-bottom:50px}
+  .card{display:flex;flex-direction:column;background:var(--panel);border:2px solid var(--line);transition:transform .12s,box-shadow .12s,border-color .12s}
+  .card:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--acc);border-color:var(--acc)}
+  .pic{aspect-ratio:1/1;background:#1d1d20;display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--head);text-transform:uppercase;overflow:hidden}
+  .pic img{width:100%;height:100%;object-fit:cover;display:block}
+  .info{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .cat{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  .name{font-weight:700;font-size:16px}
+  .price{font-family:var(--head);font-size:30px}
+  .shop{color:var(--muted);font-size:14px}
+  .save{align-self:flex-start;background:var(--hot);color:#fff;font-weight:700;font-size:12px;padding:3px 8px;text-transform:uppercase}
+  .btn{margin-top:auto;display:block;text-align:center;text-decoration:none;font-family:var(--head);text-transform:uppercase;background:var(--acc);color:#000;padding:13px;border:2px solid var(--acc)}
+  .btn:hover{background:transparent;color:var(--acc)}
+  .others{font-size:12px;color:var(--muted);margin-top:4px}
+  .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:50px 0;font-size:18px}
+
+  footer{border-top:2px solid var(--line);padding:24px 0 40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <div class="ticker" aria-hidden="true"><div id="tick"></div></div>
+  <div class="bar"><a class="logo" href="#top" aria-label="GHOSTLINE – strona główna"><svg viewBox="0 0 40 42" aria-hidden="true"><path d="M20 2C10.6 2 4.5 8.8 4.5 17.5V40l5.2-4.4L14.9 40l5.1-4.4 5.1 4.4 5.2-4.4 5.2 4.4V17.5C35.5 8.8 29.4 2 20 2Z" fill="currentColor"/><rect x="11.5" y="14" width="5.2" height="8" rx="2.6" fill="#0b0b0c"/><rect x="23.3" y="14" width="5.2" height="8" rx="2.6" fill="#0b0b0c"/><path d="M0 27.5h40" stroke="#0b0b0c" stroke-width="2.4"/></svg>GHOST<span>LINE</span></a></div>
+</header>
+
+<main class="wrap" id="top">
+  <section class="hero">
+    <h1>Najtańsze dropy.<br><em>Zero przepłacania.</em></h1>
+    <form class="search" role="search" id="searchForm">
+      <input id="q" type="search" placeholder="Szukaj: samba, new balance, bluza..." aria-label="Szukaj produktu po nazwie" autocomplete="off">
+      <button type="submit">Szukaj</button>
+    </form>
+  </section>
+
+  <section aria-labelledby="catH">
+    <h2 id="catH">Kategorie</h2>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <section aria-labelledby="listH">
+    <div class="tools">
+      <h2 id="listH">Oferty <span id="count"></span></h2>
+      <label><span class="cat">Sortuj </span>
+        <select id="sort">
+          <option value="def">Domyślnie</option>
+          <option value="asc">Cena: od najniższej</option>
+          <option value="desc">Cena: od najwyższej</option>
+        </select>
+      </label>
+    </div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><strong style="color:var(--text)">GHOSTLINE</strong> · Strona zawiera linki afiliacyjne – przy zakupie możemy otrzymać prowizję, bez dodatkowych kosztów dla Ciebie. Ceny są aktualizowane automatycznie co kilka godzin i mogą różnić się od cen w sklepie, zawsze sprawdź cenę przed zakupem.</div>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s || '').toLowerCase().replace(/ł/g, 'l').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const safe = u => /^https?:\/\//i.test(u || '') ? u : '#';
+const money = n => n.toLocaleString('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' zł';
+const DEFAULT_CAT = 'Buty';   // produkty bez pola "category" trafiają tutaj
+
+let items = [], cat = 'all', q = '', sort = 'def';
+
+function prep(p) {
+  const priced = (p.offers || []).filter(o => o.price).sort((a, b) => a.price - b.price);
+  const best = priced[0] || (p.offers || [])[0] || {};
+  const worst = priced[priced.length - 1];
+  return {
+    name: p.name || 'Produkt', image: p.image || '', category: p.category || DEFAULT_CAT,
+    best, priced, others: priced.slice(1),
+    saving: priced.length > 1 && worst.price - priced[0].price >= 1 ? {amount: worst.price - priced[0].price, shop: worst.shop} : null
+  };
+}
+
+function renderTiles() {
+  const counts = {}, pics = {};
+  items.forEach(i => { counts[i.category] = (counts[i.category] || 0) + 1; if (i.image && !pics[i.category]) pics[i.category] = i.image; });
+  const cats = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
+  const all = [{key: 'all', label: 'Wszystko', n: items.length, img: items.find(i => i.image)?.image}]
+    .concat(cats.map(c => ({key: c, label: c, n: counts[c], img: pics[c]})));
+  $('tiles').innerHTML = '';
+  all.forEach(t => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'tile';
+    b.setAttribute('aria-pressed', String(cat === t.key));
+    if (t.img) b.style.backgroundImage = `url("${t.img.replace(/"/g, '%22')}")`;
+    b.innerHTML = `<b>${esc(t.label)}</b><small>${t.n} ${t.n === 1 ? 'produkt' : 'produktów'}</small>`;
+    b.onclick = () => { cat = t.key; renderTiles(); renderGrid(); };
+    $('tiles').appendChild(b);
+  });
+}
+
+function renderGrid() {
+  const words = norm(q).split(/\s+/).filter(Boolean);
+  let list = items.filter(i => (cat === 'all' || i.category === cat) &&
+    words.every(w => norm(i.name + ' ' + i.category + ' ' + (i.best.shop || '')).includes(w)));
+  if (sort !== 'def') {
+    list = list.slice().sort((a, b) => {
+      const x = a.best.price ?? Infinity, y = b.best.price ?? Infinity;
+      return sort === 'asc' ? x - y : (y === Infinity ? -1 : (x === Infinity ? 1 : y - x));
+    });
+  }
+  $('count').textContent = `(${list.length})`;
+  const g = $('grid');
+  if (!list.length) { g.innerHTML = '<div class="empty">Nic nie znaleźliśmy. Spróbuj innej nazwy albo kategorii.</div>'; return; }
+  g.innerHTML = list.map(i => {
+    const link = safe(i.best.aff || i.best.url);
+    const img = i.image ? `<img src="${esc(i.image)}" alt="${esc(i.name)}" loading="lazy">` : esc(i.category);
+    return `<article class="card">
+      <div class="pic">${img}</div>
+      <div class="info">
+        <div class="cat">${esc(i.category)}</div>
+        <div class="name">${esc(i.name)}</div>
+        <div class="price">${i.best.price ? money(i.best.price) : 'sprawdź cenę'}</div>
+        <div class="shop">${i.best.shop ? 'Najtaniej w: ' + esc(i.best.shop) : ''}</div>
+        ${i.saving ? `<div class="save">Taniej o ${money(i.saving.amount)} niż w ${esc(i.saving.shop)}</div>` : ''}
+        <a class="btn" href="${esc(link)}" target="_blank" rel="sponsored nofollow noopener">Zobacz ofertę</a>
+        ${i.others.length ? `<div class="others">Inne: ${i.others.map(o => esc(o.shop) + ' ' + money(o.price)).join(' · ')}</div>` : ''}
+      </div></article>`;
+  }).join('');
+  g.querySelectorAll('.pic img').forEach(im => im.addEventListener('error', () => { im.replaceWith(document.createTextNode('brak zdjęcia')); }));
+}
+
+$('q').addEventListener('input', e => { q = e.target.value; renderGrid(); });
+$('searchForm').addEventListener('submit', e => { e.preventDefault(); q = $('q').value; renderGrid(); $('listH').scrollIntoView(); });
+$('sort').addEventListener('change', e => { sort = e.target.value; renderGrid(); });
+
+const msg = ['GHOSTLINE', 'Najniższe ceny', 'Streetwear i sneakersy', 'Porównujemy sklepy', 'Ceny odświeżane automatycznie'];
+$('tick').innerHTML = [0, 1].map(() => msg.map(m => `<span>${m} ///</span>`).join('')).join('');
+
+fetch('products.json?' + Date.now()).then(r => r.json()).then(data => {
+  items = data.map(prep);
+  renderTiles(); renderGrid();
+}).catch(() => { $('grid').innerHTML = '<div class="empty">Nie udało się wczytać produktów. Spróbuj odświeżyć stronę.</div>'; });
+</script>
+</body>
+</html>
