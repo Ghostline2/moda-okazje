@@ -95,4 +95,40 @@
       }
     ]
   }
+  {
+    "name": "",
+    "image": "https://50style.pl/media/cache/gallery/rc/bbdis8fu/jordan-kurtka-zimowa-m-j-brooklyn-puffer-b-mlodziezowe-kurtki-zimowe-czarny-95f014-023.jpg",
+    "offers": [
+      {
+        "shop": "50style",
+        "url": "https://50style.pl/jordan-kurtka-zimowa-m-j-brooklyn-puffer-b-mlodziezowe-kurtki-zimowe-czarny-95f014-023",
+        "aff": "",
+        "price": null
+      },
+      {
+        "shop": "goradar",
+        "url": "https://goradar.xyz/a/n5LBQimQrPFPN9y?dl=nF1Br72M",
+        "aff": "",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "",
+    "image": "https://50style.pl/media/cache/gallery/rc/s1h4vfbu/nike-bluza-z-kapturem-m-nk-club-bb-po-hoodie-meskie-bluzy-czarny-fn3859-010.jpg",
+    "offers": [
+      {
+        "shop": "50style",
+        "url": "https://50style.pl/nike-bluza-z-kapturem-m-nk-club-bb-po-hoodie-meskie-bluzy-czarny-fn3859-010",
+        "aff": "",
+        "price": null
+      },
+      {
+        "shop": "goradar",
+        "url": "https://goradar.xyz/a/n5LBQimQrPFPN9y?dl=EIy2UIS6",
+        "aff": "",
+        "price": null
+      }
+    ]
+  }
 ]
