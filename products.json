@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Nike Air Force 1",
+    "image": "https://adres-zdjecia.jpg",
+    "offers": [
+      {
+        "shop": "Sklep A",
+        "url": "https://sklep-a.pl/produkt-nike",
+        "aff": "https://twoj-link-afiliacyjny-a",
+        "price": null
+      },
+      {
+        "shop": "Sklep B",
+        "url": "https://sklep-b.pl/produkt-nike",
+        "aff": "https://twoj-link-afiliacyjny-b",
+        "price": null
+      }
+    ]
+  }
+]
