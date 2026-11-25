@@ -1,17 +1,5 @@
 [
   {
-    "name": "Adidas Samba OG",
-    "image": "https://img.eobuwie.cloud/product(f/3/e/a/f3ea0e96e6668687f42daad9e1222b5bbc638090_22_4059811988515_RP.jpg,webp)/sneakersy-adidas-samba-og-b75807-czarny-0000305188960.webp",
-    "offers": [
-      {
-        "shop": "eobuwie",
-        "url": "https://eobuwie.com.pl/p/sneakersy-adidas-samba-og-ie3678-czarny-0000305189189",
-        "aff": "https://low-prices.eu/a/v2WNquAAkOuEjvg?dl=3MCSrE5y",
-        "price": 228.99
-      }
-    ]
-  },
-  {
     "name": "Adidas Campus 00s",
     "image": "https://img.eobuwie.cloud/product(b/d/b/6/bdb634a347e53f935227f090222dd7b666da617f_21_4066749842611_EK.jpg,webp)/sneakersy-adidas-campus-00s-j-hq6507-szary-0000303316181.webp",
     "offers": [
@@ -19,7 +7,7 @@
         "shop": "eobuwie",
         "url": "https://eobuwie.com.pl/p/sneakersy-adidas-campus-00s-j-hq6507-szary-0000303316181",
         "aff": "https://low-prices.eu/a/v2WNquAAkOuEjvg?dl=xkUjoBTY",
-        "price": 239.99
+        "price": null
       }
     ]
   }
