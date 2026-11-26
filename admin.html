@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Panel – szybkie dodawanie produktów</title>
+<style>
+  :root{color-scheme:light dark;--bg:#f4f4f2;--card:#fff;--text:#1b1b1b;--muted:#666;--line:#d9d9d4;--accent:#1d4ed8;--danger:#b42318}
+  @media (prefers-color-scheme:dark){:root{--bg:#17181a;--card:#222426;--text:#eee;--muted:#a0a0a0;--line:#3a3c3f;--accent:#7aa2ff;--danger:#ff8a80}}
+  *{box-sizing:border-box}
+  body{font-family:system-ui,sans-serif;margin:0;background:var(--bg);color:var(--text);line-height:1.45}
+  main{max-width:900px;margin:auto;padding:20px}
+  h1{font-size:22px;margin:0 0 4px}
+  h2{font-size:17px;margin:0 0 10px}
+  p.sub{color:var(--muted);margin:0 0 20px}
+  section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px}
+  textarea{width:100%;padding:9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--text);font-family:ui-monospace,monospace;font-size:12px;min-height:170px}
+  #out{min-height:220px}
+  pre{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px;font-size:12px;overflow-x:auto;margin:8px 0}
+  button{font:inherit;padding:9px 14px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+  button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  button.del{color:var(--danger)}
+  button:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+  .item:first-child{border-top:0}
+  .msg{font-size:13px;color:var(--muted);margin-top:8px}
+  small{color:var(--muted)}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Szybkie dodawanie produktów</h1>
+  <p class="sub">Wklej adresy i linki, resztę (nazwę, zdjęcie, cenę) uzupełni bot.</p>
+
+  <section>
+    <h2>Wklej produkty</h2>
+    <p class="msg" style="margin:0 0 8px">Jedna linia to jedna oferta: <b>adres produktu</b>, spacja, <b>link afiliacyjny</b> (opcjonalnie jeszcze <b>cena</b>, np. 249.99, gdy bot jej nie umie pobrać). Pusta linia oddziela produkty. Kategoria (linia z #, np. #Buty), nazwa (linia bez http) i zdjęcie (linia z adresem obrazka .jpg/.png/.webp) są opcjonalne. Nazwę sklepu panel zgaduje z adresu.</p>
+<pre>#Buty
+adidas Samba OG
+https://img.eobuwie.cloud/product(...).jpg
+https://eobuwie.com.pl/p/... https://low-prices.eu/a/AAA
+https://modivo.pl/p/... https://low-prices.eu/a/BBB
+
+https://eobuwie.com.pl/p/... https://low-prices.eu/a/CCC</pre>
+    <p class="msg" style="margin:0 0 8px">Adres, który już jest na liście, dostanie nowy link afiliacyjny zamiast zdublowanego produktu.</p>
+    <textarea id="input" placeholder="Wklej tutaj..." aria-label="Produkty do dodania"></textarea>
+    <div class="row"><button type="button" class="main" id="add">Dodaj do listy</button></div>
+    <div class="msg" id="msg"></div>
+  </section>
+
+  <section>
+    <h2>Produkty na liście (<span id="count">0</span>)</h2>
+    <div id="list"></div>
+    <div class="msg" id="loadMsg"></div>
+  </section>
+
+  <section>
+    <h2>Gotowy plik products.json</h2>
+    <textarea id="out" readonly aria-label="Gotowy kod products.json"></textarea>
+    <div class="row">
+      <button type="button" class="main" id="copy">Skopiuj całość</button>
+      <a id="ghlink" href="#" target="_blank" rel="noopener"><button type="button">Otwórz products.json na GitHubie</button></a>
+    </div>
+    <p class="msg">Skopiuj, otwórz products.json, zaznacz wszystko (Ctrl+A), wklej (Ctrl+V), Commit changes.</p>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+let products = [];
+
+(function(){
+  const host = location.hostname, repo = location.pathname.split('/')[1];
+  if (host.endsWith('.github.io') && repo) {
+    $('ghlink').href = `https://github.com/${host.split('.')[0]}/${repo}/edit/main/products.json`;
+  } else { $('ghlink').style.display = 'none'; }
+})();
+
+/*PARSER-START*/
+function cleanUrl(u){ return u.trim().replace(/[?&]cookie_consent=true/, '').replace(/\?$/, ''); }
+const AFF_HOSTS = ['low-prices.eu','awin1.com','tradedoubler.com','clk.tradedoubler.com','mylead.global'];
+function isAff(u){ try { const h = new URL(u).hostname.replace(/^www\./,''); return AFF_HOSTS.some(a => h === a || h.endsWith('.'+a)); } catch(e){ return false; } }
+function isImage(u){ return /\.(jpe?g|png|webp|avif)(\?.*)?$/i.test(u) || /\/\/img\./i.test(u); }
+function shopFrom(u){
+  try {
+    const parts = new URL(u).hostname.split('.');
+    while (parts.length > 2 && ['www','sklep','shop','store','m','pl'].includes(parts[0])) parts.shift();
+    return parts[0];
+  } catch(e){ return 'sklep'; }
+}
+function parseInput(text, list){
+  const added = [], updated = [];
+  text.split(/\n\s*\n/).forEach(block => {
+    let name = '', image = '', category = '', offers = [];
+    block.split('\n').map(l => l.trim()).filter(Boolean).forEach(line => {
+      if (/^https?:\/\//i.test(line)) {
+        const tok = line.split(/\s+/), url = tok[0];
+        const aff = tok.slice(1).find(t => /^https?:\/\//i.test(t)) || '';
+        const pr = tok.slice(1).find(t => /^\d+([.,]\d+)?$/.test(t));
+        const price = pr ? parseFloat(pr.replace(',', '.')) : null;
+        if (!aff && price === null && isImage(url)) { image = url; return; }  // link do zdjęcia
+        const last = offers[offers.length - 1];
+        if (isAff(url) && last && !last.aff) { last.aff = url; return; }  // link afiliacyjny w osobnej linii
+        offers.push({ shop: shopFrom(url), url: cleanUrl(url), aff, price });
+      } else if (line.startsWith('#')) { category = line.slice(1).trim(); }
+      else { name = line; }
+    });
+    if (!offers.length) return;
+    const existing = list.find(p => p.offers.some(o => offers.some(n => n.url === o.url)));
+    if (existing) {
+      offers.forEach(n => {
+        const o = existing.offers.find(x => x.url === n.url);
+        if (o) { if (n.aff) o.aff = n.aff; if (n.price !== null) o.price = n.price; } else existing.offers.push(n);
+      });
+      if (name) existing.name = name;
+      if (image) existing.image = image;
+      if (category) existing.category = category;
+      updated.push(existing.name || existing.offers[0].url);
+    } else {
+      list.push(category ? { name, category, image, offers } : { name, image, offers });
+      added.push(name || offers[0].url);
+    }
+  });
+  return { added, updated };
+}
+/*PARSER-END*/
+
+function label(p){
+  if (p.name) return p.name;
+  const slug = p.offers[0].url.split('/').filter(Boolean).pop() || p.offers[0].url;
+  return slug.replace(/-/g,' ');
+}
+
+function render(){
+  $('count').textContent = products.length;
+  $('list').innerHTML = '';
+  products.forEach((p, i) => {
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.innerHTML = '<span><strong></strong><br><small></small></span><button type="button" class="del">Usuń</button>';
+    d.querySelector('strong').textContent = label(p);
+    const missing = p.offers.filter(o => !o.aff).length;
+    d.querySelector('small').textContent = (p.category ? p.category + ' · ' : '') + 'Sklepy: ' + p.offers.map(o => o.shop).join(', ') + (missing ? ` · brak linku afiliacyjnego: ${missing}` : '');
+    d.querySelector('button').onclick = () => { products.splice(i, 1); render(); };
+    $('list').appendChild(d);
+  });
+  $('out').value = JSON.stringify(products, null, 2);
+}
+
+$('add').onclick = () => {
+  const text = $('input').value.trim();
+  if (!text) { $('msg').textContent = 'Wklej najpierw adresy produktów.'; return; }
+  const r = parseInput(text, products);
+  if (!r.added.length && !r.updated.length) { $('msg').textContent = 'Nie znalazłem żadnych adresów zaczynających się od http.'; return; }
+  $('msg').textContent = `Dodano: ${r.added.length}, zaktualizowano: ${r.updated.length}. Skopiuj plik niżej.`;
+  $('input').value = '';
+  render();
+};
+
+$('copy').onclick = async () => {
+  try { await navigator.clipboard.writeText($('out').value); }
+  catch (e) { $('out').select(); document.execCommand('copy'); }
+  $('copy').textContent = 'Skopiowano ✓';
+  setTimeout(() => $('copy').textContent = 'Skopiuj całość', 2000);
+};
+
+fetch('products.json?' + Date.now())
+  .then(r => r.json())
+  .then(data => { products = data; $('loadMsg').textContent = 'Wczytano istniejące produkty z products.json.'; render(); })
+  .catch(() => { $('loadMsg').textContent = 'Nie udało się wczytać products.json. Otwieraj ten plik ze strony na github.io, nie z dysku.'; render(); });
+</script>
+</body>
+</html>

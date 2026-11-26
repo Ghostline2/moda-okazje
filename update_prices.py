@@ -1,4 +1,4 @@
-import json, re, time, html as ihtml, requests
+import json, os, re, time, datetime, html as ihtml, requests
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -59,9 +59,16 @@ def price_from_html(page):
         v = meta(page, prop)
         if v and to_float(v):
             return to_float(v), prop
-    m = re.search(r'"price"\s*:\s*"?([\d.,]+)"?', page)
-    if m and to_float(m.group(1)):
-        return to_float(m.group(1)), "regex"
+    for pat, name in (
+        (r'itemprop="price"[^>]*content="([\d.,]+)"', "itemprop"),
+        (r'content="([\d.,]+)"[^>]*itemprop="price"', "itemprop"),
+        (r'"(?:price|salePrice|finalPrice|currentPrice|priceGross|special_price)"\s*:\s*"?([\d]+(?:[.,]\d+)?)"?', "json"),
+        (r'data-price="([\d.,]+)"', "data-price"),
+        (r'class="[^"]*(?:price|cena)[^"]*"[^>]*>\s*(?:<[^>]+>\s*)*([\d\s\u00a0]+[.,]\d{2})\s*(?:zł|PLN)?', "html-cena"),
+    ):
+        m = re.search(pat, page, re.I)
+        if m and to_float(m.group(1)):
+            return to_float(m.group(1)), name
     return None, None
 
 
@@ -78,21 +85,23 @@ def price_from_text(text):
 def fetch(url):
     """Zwraca (tekst, rodzaj) albo (None, powód)."""
     status = "brak odpowiedzi"
-    for _ in range(2):
+    for attempt in range(2):
         try:
-            r = S.get(url, timeout=25)
+            r = S.get(url, timeout=(8, 15))
             if r.ok:
                 return r.text, "html"
             status = f"HTTP {r.status_code}"
         except Exception as e:
             status = type(e).__name__
+            if "Timeout" in status:
+                break  # sklep nie odpowiada, nie ma sensu czekać drugi raz
         time.sleep(2)
     return None, status
 
 
 def fetch_text_fallback(url):
     try:
-        r = requests.get("https://r.jina.ai/" + url, timeout=45,
+        r = requests.get("https://r.jina.ai/" + url, timeout=30,
                          headers={"Accept": "text/plain"})
         if r.ok:
             return r.text
@@ -101,15 +110,36 @@ def fetch_text_fallback(url):
     return None
 
 
+TODAY = datetime.date.today().isoformat()
+
+
+def notify(text):
+    """Wysyła alert na Telegram (tylko jeśli ustawiono sekrety TELEGRAM_TOKEN i TELEGRAM_CHAT_ID)."""
+    token, chat = os.environ.get("TELEGRAM_TOKEN"), os.environ.get("TELEGRAM_CHAT_ID")
+    if not (token and chat):
+        return
+    try:
+        requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
+                      json={"chat_id": chat, "text": text}, timeout=15)
+    except Exception:
+        pass
+
+
 def main():
     with open("products.json", encoding="utf-8") as f:
         products = json.load(f)
+    try:
+        with open("history.json", encoding="utf-8") as f:
+            history = json.load(f)
+    except Exception:
+        history = {}
 
     for p in products:
         for o in p["offers"]:
-            url, label = o["url"], f'{o.get("shop", "?")} | {p.get("name", "")[:40]}'
+            url = o["url"]
             page, kind = fetch(url)
             price = method = None
+            fb = ""
 
             if page:
                 price, method = price_from_html(page)
@@ -124,8 +154,13 @@ def main():
 
             if price is None:
                 text = fetch_text_fallback(url)
-                if text:
-                    price, method = price_from_text(text), "tekst (zapas)"
+                if not text:
+                    fb = "zapas: brak odpowiedzi"
+                else:
+                    price = price_from_text(text)
+                    method = "tekst (zapas)"
+                    if price is None:
+                        fb = "zapas: brak ceny w tekście"
                     if not p.get("image"):
                         for im in re.findall(r'!\[[^\]]*\]\((https?://\S+?\.(?:jpg|jpeg|png|webp))\)', text):
                             if "product" in im:
@@ -136,15 +171,26 @@ def main():
                         if t:
                             p["name"] = t.group(1).split(" | ")[0].strip()
 
+            label = f'{o.get("shop", "?")} | {p.get("name", "")[:40]}'
             if price:
+                old = o.get("price")
                 o["price"] = price
+                h = history.setdefault(url, {})
+                h[TODAY] = price
+                for d in sorted(h)[:-45]:
+                    del h[d]
+                if old and price <= old * 0.9:
+                    pct = round((old - price) / old * 100)
+                    notify(f"🔻 -{pct}%  {p.get('name', '')}\n{old:.2f} → {price:.2f} zł ({o.get('shop', '')})\n{o.get('aff') or url}")
                 print(f"OK    {label} -> {price:.2f} zł ({method})")
             else:
-                print(f"BRAK  {label} -> nie znaleziono ceny ({kind})")
+                print(f"BRAK  {label} -> nie znaleziono ceny (strona: {kind}; {fb})")
             time.sleep(1)
 
     with open("products.json", "w", encoding="utf-8") as f:
         json.dump(products, f, ensure_ascii=False, indent=2)
+    with open("history.json", "w", encoding="utf-8") as f:
+        json.dump(history, f, ensure_ascii=False, indent=1, sort_keys=True)
 
 
 if __name__ == "__main__":

@@ -1,12 +1,17 @@
-<!-- mylead-verification: 14a54964c1c96cecd87913e10f23cf62 -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GHOSTLINE – najniższe ceny w streetwearze</title>
 <meta name="description" content="GHOSTLINE porównuje ceny butów i ubrań streetwearowych w polskich sklepach i pokazuje, gdzie jest najtaniej.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 42'%3E%3Cpath d='M20 2C10.6 2 4.5 8.8 4.5 17.5V40l5.2-4.4L14.9 40l5.1-4.4 5.1 4.4 5.2-4.4 5.2 4.4V17.5C35.5 8.8 29.4 2 20 2Z' fill='%23d7ff1f'/%3E%3Crect x='11.5' y='14' width='5.2' height='8' rx='2.6' fill='%230b0b0c'/%3E%3Crect x='23.3' y='14' width='5.2' height='8' rx='2.6' fill='%230b0b0c'/%3E%3Cpath d='M0 27.5h40' stroke='%230b0b0c' stroke-width='2.4'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0b0b0c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GHOSTLINE – najniższe ceny w streetwearze">
+<meta property="og:description" content="Porównujemy ceny sneakersów i ubrań w polskich sklepach.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
@@ -72,6 +77,62 @@
   .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:50px 0;font-size:18px}
 
   footer{border-top:2px solid var(--line);padding:24px 0 40px;color:var(--muted);font-size:13px}
+
+  /* ===== obniżki, ulubione, filtry ===== */
+  .pic{position:relative}
+  .bdgs{position:absolute;left:8px;top:8px;display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+  .bdg{background:var(--hot);color:#fff;font-family:var(--body);font-weight:700;font-size:12px;padding:3px 8px;text-transform:uppercase}
+  .bdg.low{background:var(--acc);color:#000}
+  .bdg.hot{background:#fff;color:#000}
+  .fav{position:absolute;right:8px;top:8px;width:42px;height:42px;border:2px solid var(--line);background:rgba(11,11,12,.8);color:var(--text);font-size:20px;cursor:pointer;border-radius:0;padding:0}
+  .fav[aria-pressed="true"]{color:var(--hot);border-color:var(--hot)}
+  .was{color:var(--muted);font-family:var(--body);font-size:14px;font-weight:400;margin-left:8px}
+  .deals{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+  .deals .card{flex:0 0 250px;scroll-snap-align:start}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .chip{padding:10px 14px;font:inherit;font-weight:600;color:var(--text);background:var(--panel);border:2px solid var(--line);border-radius:0;cursor:pointer}
+  .chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:#000}
+  .ctl{display:flex;gap:12px;flex-wrap:wrap}
+
+  /* ===== telefony i tablety ===== */
+  body{overflow-x:hidden}
+  header{padding-top:env(safe-area-inset-top,0px)}
+  footer{padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+  .name{overflow-wrap:anywhere}
+  #listH,.tools{scroll-margin-top:90px}
+  .tools select{min-height:44px}
+  @media (hover:none){.card:hover{transform:none;box-shadow:none;border-color:var(--line)}.tile:hover{border-color:var(--line)}.tile[aria-pressed="true"]:hover{border-color:var(--acc)}.btn:hover{background:var(--acc);color:#000}}
+  @media (max-width:640px){
+    .wrap{padding:0 12px}
+    .bar{padding:10px 12px}
+    .logo{font-size:20px;gap:8px}
+    .logo svg{height:28px}
+    .ticker{font-size:11px}
+    .hero{padding:26px 0 12px}
+    h1{font-size:clamp(30px,10.5vw,46px);margin-bottom:16px}
+    .search input{padding:14px;font-size:16px}
+    .search button{padding:0 16px}
+    h2{font-size:19px;margin:26px 0 12px}
+    .tiles{grid-template-columns:repeat(2,1fr);gap:8px}
+    .tile{min-height:96px;padding:10px}
+    .tile b{font-size:16px}
+    .tools{margin:24px 0 12px}
+    .tools label{width:100%}
+    .tools select{width:100%}
+    .grid{grid-template-columns:repeat(2,1fr);gap:10px;padding-bottom:36px}
+    .info{padding:10px;gap:4px}
+    .name{font-size:14px}
+    .price{font-size:22px}
+    .shop{font-size:12px}
+    .save{font-size:10px}
+    .btn{padding:12px 6px;font-size:13px}
+    .others{font-size:11px}
+    .deals .card{flex-basis:70%}
+    .chip{padding:9px 11px;font-size:14px}
+    .ctl{width:100%}
+    .ctl label{flex:1;min-width:130px}
+  }
+  @media (max-width:340px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -87,6 +148,12 @@
       <input id="q" type="search" placeholder="Szukaj: samba, new balance, bluza..." aria-label="Szukaj produktu po nazwie" autocomplete="off">
       <button type="submit">Szukaj</button>
     </form>
+    <div class="chips" id="chips" role="group" aria-label="Budżet"></div>
+  </section>
+
+  <section id="dealsSec" aria-labelledby="dealsH" hidden>
+    <h2 id="dealsH">Największe obniżki</h2>
+    <div class="deals" id="deals"></div>
   </section>
 
   <section aria-labelledby="catH">
@@ -97,13 +164,16 @@
   <section aria-labelledby="listH">
     <div class="tools">
       <h2 id="listH">Oferty <span id="count"></span></h2>
+      <div class="ctl"><label><span class="cat">Marka </span>
+        <select id="brand"><option value="">Wszystkie</option></select>
+      </label>
       <label><span class="cat">Sortuj </span>
         <select id="sort">
           <option value="def">Domyślnie</option>
           <option value="asc">Cena: od najniższej</option>
           <option value="desc">Cena: od najwyższej</option>
         </select>
-      </label>
+      </label></div>
     </div>
     <div class="grid" id="grid" aria-live="polite"></div>
   </section>
@@ -120,26 +190,70 @@ const norm = s => String(s || '').toLowerCase().replace(/ł/g, 'l').normalize('N
 const safe = u => /^https?:\/\//i.test(u || '') ? u : '#';
 const money = n => n.toLocaleString('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' zł';
 const DEFAULT_CAT = 'Buty';   // produkty bez pola "category" trafiają tutaj
+const BRANDS = ['adidas','Nike','Jordan','New Balance','Puma','Asics','Salomon','Converse','Vans','Reebok','Fila','Under Armour','4F','Carhartt','The North Face','Champion','Hoka','Onitsuka Tiger'];
+const BRAND_RE = BRANDS.map(b => [b, new RegExp('(^|[^a-z0-9])' + norm(b) + '([^a-z0-9]|$)')]);
+const BUDGETS = [{l:'Wszystkie ceny',v:null},{l:'Do 200 zł',v:200},{l:'Do 300 zł',v:300},{l:'Do 500 zł',v:500},{l:'Powyżej 500 zł',v:501}];
 
-let items = [], cat = 'all', q = '', sort = 'def';
+let items = [], hist = {}, cat = 'all', q = '', sort = 'def', budget = null, brand = '';
+let favs = new Set();
+try { favs = new Set(JSON.parse(localStorage.getItem('gl_favs') || '[]')); } catch (e) {}
+const saveFavs = () => { try { localStorage.setItem('gl_favs', JSON.stringify([...favs])); } catch (e) {} };
+
+// obniżka i najniższa cena na podstawie history.json (zapisuje je bot)
+function stats(url, cur) {
+  const h = hist[url] || {}, days = Object.keys(h).sort();
+  if (!cur || !days.length) return {drop: 0, prev: null, low: false};
+  let prev = null;
+  for (let k = days.length - 1; k >= 0; k--) { if (Math.abs(h[days[k]] - cur) > 0.009) { prev = h[days[k]]; break; } }
+  const drop = prev && prev > cur ? Math.round((prev - cur) / prev * 100) : 0;
+  const low = days.length >= 3 && cur <= Math.min(...days.map(d => h[d])) + 0.009;
+  return {drop, prev, low};
+}
 
 function prep(p) {
   const priced = (p.offers || []).filter(o => o.price).sort((a, b) => a.price - b.price);
   const best = priced[0] || (p.offers || [])[0] || {};
   const worst = priced[priced.length - 1];
+  const nm = norm(p.name);
   return {
+    key: (p.offers && p.offers[0] && p.offers[0].url) || p.name,
     name: p.name || 'Produkt', image: p.image || '', category: p.category || DEFAULT_CAT,
-    best, priced, others: priced.slice(1),
+    brand: p.brand || (BRAND_RE.find(([, re]) => re.test(nm)) || [''])[0],
+    best, others: priced.slice(1), st: stats(best.url, best.price),
     saving: priced.length > 1 && worst.price - priced[0].price >= 1 ? {amount: worst.price - priced[0].price, shop: worst.shop} : null
   };
+}
+
+function cardHTML(i, tag) {
+  const link = safe(i.best.aff || i.best.url);
+  const img = i.image ? `<img src="${esc(i.image)}" alt="${esc(i.name)}" loading="lazy">` : esc(i.category);
+  const badges = (tag ? `<span class="bdg hot">${tag}</span>` : '') + (i.st.drop >= 3 ? `<span class="bdg">-${i.st.drop}%</span>` : '') + (i.st.low ? '<span class="bdg low">Najniższa cena</span>' : '');
+  const on = favs.has(i.key);
+  return `<article class="card">
+    <div class="pic">${img}<div class="bdgs">${badges}</div><button type="button" class="fav" data-key="${esc(i.key)}" aria-pressed="${on}" aria-label="${on ? 'Usuń z ulubionych' : 'Dodaj do ulubionych'}">${on ? '♥' : '♡'}</button></div>
+    <div class="info">
+      <div class="cat">${esc(i.category)}${i.brand ? ' · ' + esc(i.brand) : ''}</div>
+      <div class="name">${esc(i.name)}</div>
+      <div class="price">${i.best.price ? money(i.best.price) : 'sprawdź cenę'}${i.st.prev && i.st.drop >= 3 ? `<s class="was">${money(i.st.prev)}</s>` : ''}</div>
+      <div class="shop">${i.best.shop ? 'Najtaniej w: ' + esc(i.best.shop) : ''}</div>
+      ${i.saving ? `<div class="save">Taniej o ${money(i.saving.amount)} niż w ${esc(i.saving.shop)}</div>` : ''}
+      <a class="btn" href="${esc(link)}" target="_blank" rel="sponsored nofollow noopener">Zobacz ofertę</a>
+      ${i.others.length ? `<div class="others">Inne: ${i.others.map(o => esc(o.shop) + ' ' + money(o.price)).join(' · ')}</div>` : ''}
+    </div></article>`;
+}
+
+function bindImgs(root) {
+  root.querySelectorAll('.pic img').forEach(im => im.addEventListener('error', () => { im.replaceWith(document.createTextNode('brak zdjęcia')); }));
 }
 
 function renderTiles() {
   const counts = {}, pics = {};
   items.forEach(i => { counts[i.category] = (counts[i.category] || 0) + 1; if (i.image && !pics[i.category]) pics[i.category] = i.image; });
   const cats = Object.keys(counts).sort((a, b) => counts[b] - counts[a]);
-  const all = [{key: 'all', label: 'Wszystko', n: items.length, img: items.find(i => i.image)?.image}]
-    .concat(cats.map(c => ({key: c, label: c, n: counts[c], img: pics[c]})));
+  const fi = items.filter(i => favs.has(i.key));
+  const all = [{key: 'all', label: 'Wszystko', n: items.length, img: (items.find(i => i.image) || {}).image}];
+  if (fi.length) all.push({key: 'fav', label: '♥ Ulubione', n: fi.length, img: (fi.find(i => i.image) || {}).image});
+  cats.forEach(c => all.push({key: c, label: c, n: counts[c], img: pics[c]}));
   $('tiles').innerHTML = '';
   all.forEach(t => {
     const b = document.createElement('button');
@@ -152,10 +266,36 @@ function renderTiles() {
   });
 }
 
+function renderChips() {
+  $('chips').innerHTML = '';
+  BUDGETS.forEach(c => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.textContent = c.l;
+    b.setAttribute('aria-pressed', String(budget === c.v));
+    b.onclick = () => { budget = c.v; renderChips(); renderGrid(); };
+    $('chips').appendChild(b);
+  });
+}
+
+function fillBrands() {
+  const bs = [...new Set(items.map(i => i.brand).filter(Boolean))].sort();
+  $('brand').innerHTML = '<option value="">Wszystkie</option>' + bs.map(b => `<option>${esc(b)}</option>`).join('');
+}
+
+function renderDeals() {
+  const d = items.filter(i => i.st.drop >= 5).sort((a, b) => b.st.drop - a.st.drop).slice(0, 8);
+  $('dealsSec').hidden = !d.length;
+  $('deals').innerHTML = d.map((i, n) => cardHTML(i, n === 0 ? '🔥 Hit dnia' : '')).join('');
+  bindImgs($('deals'));
+}
+
 function renderGrid() {
   const words = norm(q).split(/\s+/).filter(Boolean);
-  let list = items.filter(i => (cat === 'all' || i.category === cat) &&
-    words.every(w => norm(i.name + ' ' + i.category + ' ' + (i.best.shop || '')).includes(w)));
+  let list = items.filter(i =>
+    (cat === 'all' || (cat === 'fav' ? favs.has(i.key) : i.category === cat)) &&
+    (budget === null || (i.best.price && (budget === 501 ? i.best.price > 500 : i.best.price <= budget))) &&
+    (!brand || i.brand === brand) &&
+    words.every(w => norm(i.name + ' ' + i.category + ' ' + i.brand + ' ' + (i.best.shop || '')).includes(w)));
   if (sort !== 'def') {
     list = list.slice().sort((a, b) => {
       const x = a.best.price ?? Infinity, y = b.best.price ?? Infinity;
@@ -164,35 +304,36 @@ function renderGrid() {
   }
   $('count').textContent = `(${list.length})`;
   const g = $('grid');
-  if (!list.length) { g.innerHTML = '<div class="empty">Nic nie znaleźliśmy. Spróbuj innej nazwy albo kategorii.</div>'; return; }
-  g.innerHTML = list.map(i => {
-    const link = safe(i.best.aff || i.best.url);
-    const img = i.image ? `<img src="${esc(i.image)}" alt="${esc(i.name)}" loading="lazy">` : esc(i.category);
-    return `<article class="card">
-      <div class="pic">${img}</div>
-      <div class="info">
-        <div class="cat">${esc(i.category)}</div>
-        <div class="name">${esc(i.name)}</div>
-        <div class="price">${i.best.price ? money(i.best.price) : 'sprawdź cenę'}</div>
-        <div class="shop">${i.best.shop ? 'Najtaniej w: ' + esc(i.best.shop) : ''}</div>
-        ${i.saving ? `<div class="save">Taniej o ${money(i.saving.amount)} niż w ${esc(i.saving.shop)}</div>` : ''}
-        <a class="btn" href="${esc(link)}" target="_blank" rel="sponsored nofollow noopener">Zobacz ofertę</a>
-        ${i.others.length ? `<div class="others">Inne: ${i.others.map(o => esc(o.shop) + ' ' + money(o.price)).join(' · ')}</div>` : ''}
-      </div></article>`;
-  }).join('');
-  g.querySelectorAll('.pic img').forEach(im => im.addEventListener('error', () => { im.replaceWith(document.createTextNode('brak zdjęcia')); }));
+  if (!list.length) { g.innerHTML = '<div class="empty">Nic nie znaleźliśmy. Spróbuj innej nazwy, marki lub budżetu.</div>'; return; }
+  g.innerHTML = list.map(i => cardHTML(i)).join('');
+  bindImgs(g);
 }
 
+document.addEventListener('click', e => {
+  const b = e.target.closest('.fav');
+  if (!b) return;
+  const k = b.dataset.key;
+  favs.has(k) ? favs.delete(k) : favs.add(k);
+  saveFavs();
+  if (cat === 'fav' && !favs.size) cat = 'all';
+  renderTiles(); renderGrid(); renderDeals();
+});
 $('q').addEventListener('input', e => { q = e.target.value; renderGrid(); });
 $('searchForm').addEventListener('submit', e => { e.preventDefault(); q = $('q').value; renderGrid(); $('listH').scrollIntoView(); });
 $('sort').addEventListener('change', e => { sort = e.target.value; renderGrid(); });
+$('brand').addEventListener('change', e => { brand = e.target.value; renderGrid(); });
 
 const msg = ['GHOSTLINE', 'Najniższe ceny', 'Streetwear i sneakersy', 'Porównujemy sklepy', 'Ceny odświeżane automatycznie'];
 $('tick').innerHTML = [0, 1].map(() => msg.map(m => `<span>${m} ///</span>`).join('')).join('');
 
-fetch('products.json?' + Date.now()).then(r => r.json()).then(data => {
+const t = Date.now();
+Promise.all([
+  fetch('products.json?' + t).then(r => r.json()),
+  fetch('history.json?' + t).then(r => r.ok ? r.json() : {}).catch(() => ({}))
+]).then(([data, h]) => {
+  hist = h || {};
   items = data.map(prep);
-  renderTiles(); renderGrid();
+  fillBrands(); renderChips(); renderTiles(); renderDeals(); renderGrid();
 }).catch(() => { $('grid').innerHTML = '<div class="empty">Nie udało się wczytać produktów. Spróbuj odświeżyć stronę.</div>'; });
 </script>
 </body>
