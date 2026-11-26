@@ -2,9 +2,14 @@ name: Aktualizacja cen
 on:
   schedule:
     - cron: "0 */6 * * *"
+  push:
+    paths: ["products.json"]
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: prices
+  cancel-in-progress: false
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -15,10 +20,14 @@ jobs:
           python-version: "3.12"
       - run: pip install requests
       - run: python update_prices.py
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       - name: Zapisz zmiany
         run: |
           git config user.name "price-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add products.json
+          git add products.json history.json
           git diff --staged --quiet || git commit -m "Aktualizacja cen"
+          git pull --rebase
           git push
