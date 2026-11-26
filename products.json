@@ -1,12 +1,18 @@
 [
   {
-    "name": "",
+    "name": "adidas Samba Og",
     "image": "https://img.eobuwie.cloud/product(4/0/c/b/40cbbaccf60ec5ed6c6167449aac70c8c45cef40_22_4067886695382.jpg,webp)/sneakersy-adidas-samba-og-ie3678-czarny-0000305189189.webp",
     "offers": [
       {
         "shop": "eobuwie",
         "url": "https://eobuwie.com.pl/p/sneakersy-adidas-samba-og-ie3678-czarny-0000305189189",
         "aff": "https://low-prices.eu/a/v2WNquAAkOuEjvg?dl=3MCSrE5y",
+        "price": 228.99
+      },
+      {
+        "shop": "siezeer",
+        "url": "https://sklep.sizeer.com/adidas-samba-og-meskie-sneakersy-czarny-b75807",
+        "aff": "https://sklep.sizeer.com/adidas-samba-og-meskie-sneakersy-czarny-b75807",
         "price": 228.99
       }
     ]
