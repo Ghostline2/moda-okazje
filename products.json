@@ -138,5 +138,30 @@
         "price": null
       }
     ]
+  },
+  {
+    "name": "Carhartt WIP GEORGIA",
+    "category": "BLUZKA",
+    "image": "https://img01.ztat.net/article/spp-media-p1/c61ace0027554197af2639298606643f/e777bbdbfbf04c9c9152f2793c51ef43.jpg?imwidth=156&filter=packshot",
+    "offers": [
+      {
+        "shop": "zalando",
+        "url": "https://www.zalando.pl/carhartt-wip-georgia-shirt-bluzka-black-destroy-wash-c1421e02w-q11.html",
+        "aff": "",
+        "price": null
+      }
+    ]
+  },
+  {
+    "name": "The North FaceRETRO",
+    "image": "https://img01.ztat.net/article/spp-media-p1/9491df9bfd2c47f8a2b2d784729493a8/6e77b27d4822405ab487a2a73cbffac9.jpg?imwidth=156&filter=packshot",
+    "offers": [
+      {
+        "shop": "zalando",
+        "url": "https://www.zalando.pl/the-north-face-1996-retro-nuptse-jacket-kurtka-puchowa-summit-navyblack-th321u01e-e11.html",
+        "aff": "",
+        "price": null
+      }
+    ]
   }
 ]
