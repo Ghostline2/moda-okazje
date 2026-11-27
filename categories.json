@@ -1,9 +1,24 @@
 {
-  "all": { "label": "Wszystko", "image": "" },
-  "Buty": { "image": "" },
-  "Bluzy": { "image": "" },
-  "Kurtki": { "image": "" },
-  "Spodnie": { "image": "" },
-  "Koszulki": { "image": "" },
-  "Czapki": { "image": "" }
+  "all": {
+    "label": "Wszystko",
+    "image": "cat-wszystko.svg"
+  },
+  "Buty": {
+    "image": "cat-buty.svg"
+  },
+  "Bluzy": {
+    "image": "cat-bluzy.svg"
+  },
+  "Kurtki": {
+    "image": "cat-kurtki.svg"
+  },
+  "Spodnie": {
+    "image": "cat-spodnie.svg"
+  },
+  "Koszulki": {
+    "image": "cat-koszulki.svg"
+  },
+  "Czapki": {
+    "image": "cat-czapki.svg"
+  }
 }
